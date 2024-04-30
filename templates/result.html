@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Assuming you have a CSS file for styling -->
+</head>
+<body>
+    <header>
+        <h1>Network Traffic Analysis Results</h1>
+    </header>
+    <main>
+        <!-- Protocol Distribution Over Time -->
+        <section id="protocol_distribution">
+            <h2>Protocol Distribution Over Time</h2>
+
+            <img src="{{ url_for('static', filename='images/protocol_distribution_over_time.png') }}" alt="Analysis Image">
+
+        </section>
+
+        <!-- Packet Size Distribution by Protocol -->
+        <section id="packet_size_distribution">
+            <h2>Packet Size Distribution by Protocol</h2>
+            <img src="static/images/packet_size_distribution_by_protocol.png" alt="Packet Size Distribution by Protocol">
+        </section>
+
+        <!-- Inter-arrival Time Analysis -->
+        <section id="inter_arrival_time">
+            <h2>Inter-arrival Time Analysis</h2>
+            <img src="static/images/inter_arrival_time_analysis.png" alt="Inter-arrival Time Analysis">
+        </section>
+
+        <!-- Flow Duration Analysis -->
+        <section id="flow_duration">
+            <h2>Flow Duration Analysis</h2>
+            <img src="static/images/flow_duration_analysis.png" alt="Flow Duration Analysis">
+        </section>
+
+        <!-- Top Conversations -->
+        <section id="top_conversations">
+            <h2>Top Conversations</h2>
+            <img src="static/images/top_conversations.png" alt="Top Conversations">
+        </section>
+
+        <!-- DNS Request Analysis -->
+        <section id="dns_request">
+            <h2>DNS Request Analysis</h2>
+            <img src="static/images/dns_request_analysis.png" alt="DNS Request Analysis">
+        </section>
+
+        <!-- HTTP Request Analysis -->
+        <section id="http_request">
+            <h2>HTTP Request Analysis</h2>
+            <img src="static/images/http_request_analysis.png" alt="HTTP Request Analysis">
+        </section>
+
+        <!-- Geolocation Visualization -->
+        <section id="geolocation_visualization">
+            <h2>Geolocation Visualization</h2>
+            <img src="static/images/geolocation_visualization.png" alt="Geolocation Visualization">
+        </section>
+
+        <!-- Anomaly Detection -->
+        <section id="anomaly_detection">
+            <h2>Anomaly Detection</h2>
+            <img src="static/images/anomaly_detection.png" alt="Anomaly Detection">
+        </section>
+
+        <!-- Bandwidth Utilization -->
+        <section id="bandwidth_utilization">
+            <h2>Bandwidth Utilization</h2>
+            <img src="static/images/bandwidth_utilization.png" alt="Bandwidth Utilization">
+        </section>
+
+        <!-- Network Topology Visualization -->
+        <section id="network_topology">
+            <h2>Network Topology Visualization</h2>
+            <img src="static/images/network_topology_visualization.png" alt="Network Topology Visualization">
+        </section>
+
+        <!-- Correlation Analysis -->
+        <section id="correlation_analysis">
+            <h2>Correlation Analysis</h2>
+            <img src="static/images/correlation_analysis.png" alt="Correlation Analysis">
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Your Company</p>
+    </footer>
+</body>
+</html>
