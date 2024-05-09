@@ -8,15 +8,26 @@ from scapy.layers.http import HTTP
 from scapy.layers.dns import DNS
 from scapy.layers.inet import IP
 from scapy.all import TCP, UDP, ICMP, ARP
+import os
 
 
 # Use Agg backend to avoid GUI-related warnings
 import matplotlib
 matplotlib.use('Agg')
 
+# Get the absolute path to the directory where the script is located
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Define the directory where the images will be saved
+image_dir = os.path.join(script_dir, 'static', 'images')
+
 
 # Function for Protocol Distribution Over Time
 def protocol_distribution_over_time(packets):
+    if not packets:
+        print("Error: No packets data found.")
+        return
+
     protocols = Counter()
     timestamps = []
 
@@ -36,8 +47,10 @@ def protocol_distribution_over_time(packets):
     plt.xlabel('Timestamp')
     plt.ylabel('Packet Count')
     plt.grid(True)
-    plt.savefig('static/images/protocol_distribution_over_time.png')  # Save the plot as a PNG image
+    # plt.savefig('static/images/protocol_distribution_over_time.png')  # Save the plot as a PNG image
+    plt.savefig(os.path.join(image_dir, 'protocol_distribution_over_time.png'))
     plt.close()
+
 
 # Function for Packet Size Distribution by Protocol
 def packet_size_distribution_by_protocol(packets):
@@ -377,6 +390,36 @@ def correlation_analysis(packets):
         print("An error occurred during correlation analysis:", str(e))
 
 
+# def load_packets(pcap_file):
+#     print("Loading packets from:", pcap_file)
+#     packets = rdpcap(pcap_file)
+#     print("Loaded", len(packets), "packets")
+#     return packets
+
+
+# # Main function
+# def main(pcap_file=None):
+#     packets = rdpcap(pcap_file) # if pcap_file else []
+
+#     protocol_distribution_over_time(packets)
+#     packet_size_distribution_by_protocol(packets)
+#     inter_arrival_time_analysis(packets)
+#     flow_duration_analysis(packets)
+#     top_conversations(packets)
+#     dns_request_analysis(packets)
+#     http_request_analysis(packets)
+#     geolocation_visualization(packets)
+#     anomaly_detection(packets)
+#     bandwidth_utilization(packets)
+#     network_topology_visualization(packets)
+#     correlation_analysis(packets)
+
+# # Example usage
+# if __name__ == "__main__":
+#     pcap_file = "2013-12-09-Whitehole-EK-traffic.pcap"
+#     main(pcap_file)
+
+
 def load_packets(pcap_file):
     print("Loading packets from:", pcap_file)
     packets = rdpcap(pcap_file)
@@ -385,9 +428,61 @@ def load_packets(pcap_file):
 
 
 # Main function
-def main(pcap_file=None):
-    packets = rdpcap(pcap_file) if pcap_file else []
+# def main(pcap_file=None):
+#     if not pcap_file:
+#         print("No pcap file provided.")
+#         return
+    
+#     try:
+#         packets = load_packets(pcap_file)
+#         protocol_distribution_over_time(packets)
+#         # Call other analysis functions here...
+#     except Exception as e:
+#         print("An error occurred:", str(e))
 
+# Function for main feature extraction
+
+# def main(pcap_file=None):
+#     # Load packets from the pcap file
+#     packets = load_packets(pcap_file)
+
+#     # Check if packets are loaded successfully
+#     if packets:
+#         print("Packets loaded successfully.")
+#     else:
+#         print("Error: Failed to load packets.")
+#         return
+
+#     # Perform feature extraction
+#     protocol_distribution_over_time(packets)
+#     packet_size_distribution_by_protocol(packets)
+#     inter_arrival_time_analysis(packets)
+#     flow_duration_analysis(packets)
+#     top_conversations(packets)
+#     dns_request_analysis(packets)
+#     http_request_analysis(packets)
+#     geolocation_visualization(packets)
+#     anomaly_detection(packets)
+#     bandwidth_utilization(packets)
+#     network_topology_visualization(packets)
+#     correlation_analysis(packets)
+
+    # print("Feature extraction completed.")
+
+    # Return the results or handle them as needed
+
+
+# Function for main feature extraction
+def main(pcap_file=None):
+    # Load packets from the pcap file
+    packets = load_packets(pcap_file)
+
+    # Check if packets are loaded successfully
+    if not packets:
+        print("Error: Failed to load packets.")
+        return None  # Return None to indicate failure
+
+    # Perform feature extraction
     protocol_distribution_over_time(packets)
     packet_size_distribution_by_protocol(packets)
     inter_arrival_time_analysis(packets)
@@ -401,7 +496,15 @@ def main(pcap_file=None):
     network_topology_visualization(packets)
     correlation_analysis(packets)
 
+    print("Feature extraction completed.")
+
+    # Return success indication
+    return True
+
+
+
+
 # Example usage
-if __name__ == "__main__":
-    pcap_file = "2013-12-09-Whitehole-EK-traffic.pcap"
-    main(pcap_file)
+# if __name__ == "__main__":
+#     pcap_file = "2013-12-09-Whitehole-EK-traffic.pcap"
+#     main(pcap_file)

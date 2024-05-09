@@ -1,18 +1,30 @@
-<!-- index.html -->
-
+<!-- templates/index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload your Pcap File</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <title>Packet Analysis Tool</title>
 </head>
 <body>
-    <h1>Upload a File</h1>
+    <h1>Packet Analysis Tool</h1>
+
+    <h2>Upload a pcap file for analysis</h2>
     <form action="/upload" method="post" enctype="multipart/form-data">
         <input type="file" name="file">
+        <input type="submit" value="Upload">
+    </form>
+
+    <h2>Or</h2>
+
+    <h2>Run Live Packet Analysis</h2>
+    <form action="/" method="POST">
+        <select name="interface">
+            {% for interface in interface_names %}
+                <option value="{{ interface['name'] }}">{{ interface }}</option>
+            {% endfor %}
+        </select>
         <button type="submit">Start Analysis</button>
     </form>
+    
+
 </body>
 </html>
