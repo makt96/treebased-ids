@@ -71,11 +71,12 @@ def create_app():
 
     @app.route('/data-feed')
     def data_feed():
-        live_data = live_analysis.get_live_results()
-        if not live_data:
-            print("No live data available")
-            return jsonify({}), 204
-        return jsonify(live_data)
+     live_data = live_analysis.get_live_results()
+     if not live_data:
+        print("No live data available")
+        return jsonify({}), 204  # Ensure to handle this in client-side
+     return jsonify(live_data)
+
 
     return app
 
