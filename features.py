@@ -390,35 +390,6 @@ def correlation_analysis(packets):
         print("An error occurred during correlation analysis:", str(e))
 
 
-# def load_packets(pcap_file):
-#     print("Loading packets from:", pcap_file)
-#     packets = rdpcap(pcap_file)
-#     print("Loaded", len(packets), "packets")
-#     return packets
-
-
-# # Main function
-# def main(pcap_file=None):
-#     packets = rdpcap(pcap_file) # if pcap_file else []
-
-#     protocol_distribution_over_time(packets)
-#     packet_size_distribution_by_protocol(packets)
-#     inter_arrival_time_analysis(packets)
-#     flow_duration_analysis(packets)
-#     top_conversations(packets)
-#     dns_request_analysis(packets)
-#     http_request_analysis(packets)
-#     geolocation_visualization(packets)
-#     anomaly_detection(packets)
-#     bandwidth_utilization(packets)
-#     network_topology_visualization(packets)
-#     correlation_analysis(packets)
-
-# # Example usage
-# if __name__ == "__main__":
-#     pcap_file = "2013-12-09-Whitehole-EK-traffic.pcap"
-#     main(pcap_file)
-
 
 def load_packets(pcap_file):
     print("Loading packets from:", pcap_file)
@@ -427,49 +398,6 @@ def load_packets(pcap_file):
     return packets
 
 
-# Main function
-# def main(pcap_file=None):
-#     if not pcap_file:
-#         print("No pcap file provided.")
-#         return
-    
-#     try:
-#         packets = load_packets(pcap_file)
-#         protocol_distribution_over_time(packets)
-#         # Call other analysis functions here...
-#     except Exception as e:
-#         print("An error occurred:", str(e))
-
-# Function for main feature extraction
-
-# def main(pcap_file=None):
-#     # Load packets from the pcap file
-#     packets = load_packets(pcap_file)
-
-#     # Check if packets are loaded successfully
-#     if packets:
-#         print("Packets loaded successfully.")
-#     else:
-#         print("Error: Failed to load packets.")
-#         return
-
-#     # Perform feature extraction
-#     protocol_distribution_over_time(packets)
-#     packet_size_distribution_by_protocol(packets)
-#     inter_arrival_time_analysis(packets)
-#     flow_duration_analysis(packets)
-#     top_conversations(packets)
-#     dns_request_analysis(packets)
-#     http_request_analysis(packets)
-#     geolocation_visualization(packets)
-#     anomaly_detection(packets)
-#     bandwidth_utilization(packets)
-#     network_topology_visualization(packets)
-#     correlation_analysis(packets)
-
-    # print("Feature extraction completed.")
-
-    # Return the results or handle them as needed
 
 
 # Function for main feature extraction
@@ -504,7 +432,3 @@ def main(pcap_file=None):
 
 
 
-# Example usage
-# if __name__ == "__main__":
-#     pcap_file = "2013-12-09-Whitehole-EK-traffic.pcap"
-#     main(pcap_file)

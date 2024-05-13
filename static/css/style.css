@@ -5,6 +5,7 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 /* Header Styles */
@@ -30,6 +31,8 @@ section {
     padding: 20px;
     flex-basis: 30%; /* Adjusts width of sections, responsive to screen size */
     position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
 }
 
 h1, h2 {
@@ -41,7 +44,8 @@ img {
     width: 100%;
     height: auto;
     display: block;
-    margin: 0 auto;
+    margin-bottom: 10px;
+    border-radius: 4px;
 }
 
 /* Footer Styles */
@@ -93,4 +97,20 @@ a {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+/* Add some animation to the images on hover to make them more interactive */
+img:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+/* Style improvements for buttons and form elements */
+input[type="submit"], button {
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+input[type="submit"]:hover, button:hover {
+    background-color: #023e8a;
 }

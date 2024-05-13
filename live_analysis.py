@@ -1,266 +1,89 @@
-# # live_analysis.py
-# from scapy.all import sniff, IP
-# import joblib
-# import collections
-# import platform
-
-# # Load the pre-trained machine learning model
-# model = joblib.load('stk_model.pkl')
-
-# # Global variables to track packet statistics
-# packet_freqs = collections.defaultdict(int)
-# total_traffic_volume = 0
-
-# def preprocess(packet):
-#     global total_traffic_volume
-#     packet_size = len(packet)
-#     src_ip = packet[IP].src if IP in packet else ''
-#     dst_ip = packet[IP].dst if IP in packet else ''
-#     packet_freqs[src_ip] += 1
-#     packet_freqs[dst_ip] += 1
-#     total_traffic_volume += packet_size
-#     return [packet_size, packet_freqs[src_ip], packet_freqs[dst_ip], total_traffic_volume]
-
-# def process_packet(packet):
-#     if IP not in packet:
-#         return
-#     features = preprocess(packet)
-#     prediction = model.predict([features])
-#     print(f"Prediction: {prediction[0]}")
-
-# def get_available_interfaces():
-#     system = platform.system()
-#     if system == 'Windows':
-#         from scapy.arch.windows import get_windows_if_list
-#         interfaces = get_windows_if_list()
-#         print("Available interfaces:", interfaces)
-#         return [(interface['name'], interface['description']) for interface in interfaces]
-#     else:
-#         print("Interface discovery is not supported on this platform.")
-#         return []
-
-# def live_packet_analysis(interface):
-#     if not interface:
-#         print("No interface selected.")
-#         return
-
-#     print(f"Starting live packet analysis on interface: {interface}")
-#     sniff(iface=interface, prn=process_packet, store=False, filter="ip")
-
-# if __name__ == "__main__":
-#     # Run live packet analysis
-#     live_packet_analysis()
-
-
-# import platform
-# from scapy.all import sniff, IP
-# import joblib
-# import collections
-
-# # Load the pre-trained machine learning model
-# model = joblib.load('stk_model.pkl')
-
-# # Global variables to track packet statistics
-# packet_freqs = collections.defaultdict(int)
-# total_traffic_volume = 0
-
-# def preprocess(packet):
-#     global total_traffic_volume
-#     packet_size = len(packet)
-#     src_ip = packet[IP].src if IP in packet else ''
-#     dst_ip = packet[IP].dst if IP in packet else ''
-#     packet_freqs[src_ip] += 1
-#     packet_freqs[dst_ip] += 1
-#     total_traffic_volume += packet_size
-#     return [packet_size, packet_freqs[src_ip], packet_freqs[dst_ip], total_traffic_volume]
-
-# def process_packet(packet):
-#     if IP not in packet:
-#         return
-#     features = preprocess(packet)
-#     prediction = model.predict([features])
-#     print(f"Prediction: {prediction[0]}")
-
-# def get_available_interfaces():
-#     system = platform.system()
-#     if system == 'Windows':
-#         from scapy.arch.windows import get_windows_if_list
-#         return get_windows_if_list()
-#     else:
-#         print("Interface discovery is not supported on this platform.")
-#         return []
-
-# def interface_selection_menu(interfaces):
-#     print("Available Interfaces:")
-#     for index, interface in enumerate(interfaces):
-#         print(f"{index + 1}: {interface['name']} - {interface['description']}")
-#     selection = int(input("Select the interface number you want to use: ")) - 1
-#     if 0 <= selection < len(interfaces):
-#         return interfaces[selection]['name']
-#     else:
-#         print("Invalid interface selection.")
-#         return None
-
-# def live_packet_analysis(interface):
-#     if not interface:
-#         print("No interface selected.")
-#         return
-
-#     print(f"Starting live packet analysis on interface: {interface}")
-#     try:
-#         sniff(iface=interface, prn=process_packet, store=False, filter="ip")
-#     except Exception as e:
-#         print(f"Failed to start packet sniffing on {interface}: {str(e)}")
-
-# if __name__ == "__main__":
-#     interfaces = get_available_interfaces()
-#     if interfaces:
-#         selected_interface = interface_selection_menu(interfaces)
-#         if selected_interface:
-#             live_packet_analysis(selected_interface)
-#     else:
-#         print("No interfaces available for selection.")
-
-
-
 import subprocess
-import platform
-from scapy.all import sniff, IP
+import json
+import time
 import joblib
-import collections
 
 # Load the pre-trained machine learning model
 model = joblib.load('stk_model.pkl')
 
-# Global variables to track packet statistics
-packet_freqs = collections.defaultdict(int)
-total_traffic_volume = 0
+# Global storage for packet frequency counts and total traffic
+packet_freqs = {}
+total_traffic = 0
+live_results = []
 
-def preprocess(packet):
-    global total_traffic_volume
-    packet_size = len(packet)
-    src_ip = packet[IP].src if IP in packet else ''
-    dst_ip = packet[IP].dst if IP in packet else ''
-    packet_freqs[src_ip] += 1
-    packet_freqs[dst_ip] += 1
-    total_traffic_volume += packet_size
-    print("Now Live Packets are preprocessed and going to process_packet function...")
-    return [packet_size, packet_freqs[src_ip], packet_freqs[dst_ip], total_traffic_volume]
+def preprocess(packet_data):
+    """ Prepare packet data for model prediction based on features similar to static analysis. """
+    processed_features = [
+        packet_data['len'],
+        packet_data['src_packet_freq'],
+        packet_data['dst_packet_freq'],
+        packet_data['traffic_volume']
+    ]
+    print(f"Preprocessed features: {processed_features}")  # Debugging statement
+    return processed_features
 
-def process_packet(packet):
-    if IP not in packet:
-        return
-    features = preprocess(packet)
-    print("Prediction is now starting...")
-    prediction = model.predict([features])
-    print(f"Prediction: {prediction[0]}")
-
-def get_available_interfaces():
-    system = platform.system()
-    if system == 'Windows':
-        # Execute PowerShell command to get network adapter information
-        cmd = 'powershell "Get-NetAdapter | Select Name, Status, LinkSpeed, MacAddress"'
-        output = subprocess.check_output(cmd, shell=True, text=True)
-        # Parse the output to extract interface information
-        interfaces = []
-        for line in output.strip().split('\n'):
-            fields = line.strip().split()
-            interface = {
-                'name': fields[0],
-                'status': fields[1],
-                'link_speed': fields[2],
-                'mac_address': fields[3]
-            }
-            interfaces.append(interface)
-        return interfaces
-    else:
-        print("Interface discovery is not supported on this platform.")
-        return []
-
-# def interface_selection_menu(interfaces):
-#     print("Available Interfaces:")
-#     for index, interface in enumerate(interfaces):
-#         print(f"{index + 1}: {interface['name']} - {interface['status']} - {interface['link_speed']} - {interface['mac_address']}")
-#     selection = int(input("Select the interface number you want to use: ")) - 1
-#     if 0 <= selection < len(interfaces):
-#         return interfaces[selection]['name']
-#     else:
-#         print("Invalid interface selection.")
-#         return None
-
-def interface_selection_menu(interfaces):
-    print("Available Interfaces:")
-    for index, interface in enumerate(interfaces):
-        print(f"{index + 1}: {interface['name']} - {interface['status']} - {interface['link_speed']} - {interface['mac_address']}")
-    selection = int(input("Select the interface number you want to use: ")) - 1
-    if 0 <= selection < len(interfaces):
-        return interfaces[selection]['name']  # Return only the interface name
-    else:
-        print("Invalid interface selection.")
-        return None
-
-
-# def live_packet_analysis(interface):
-#     if not interface:
-#         print("No interface selected.")
-#         return
-
-#     print(f"Starting live packet analysis on interface: {interface}")
-#     try:
-#         sniff(iface=interface, prn=process_packet, store=False, filter="ip")
-#     except Exception as e:
-#         print(f"Failed to start packet sniffing on {interface}: {str(e)}")
-
-# def live_packet_analysis(interface):
-#     if not interface:
-#         print("No interface selected.")
-#         return
-
-#     print(f"Starting live packet analysis on interface: {interface}")
-#     live_results = []
-
-#     try:
-#         # sniff(iface=interface, prn=process_packet, store=False, filter="ip")
-#         sniff(iface=interface, prn=lambda pkt: live_results.append(process_packet(pkt)), store=False, filter="ip")
-#     except Exception as e:
-#         print(f"Failed to start packet sniffing on {interface}: {str(e)}")
-#     print("Here is Live Data that has to be sent to main.py and then app.py (data-feed function) -> live.html: ", live_results)
-#     return live_results
-
-
-def live_packet_analysis(interface):
-    if not interface:
-        print("No interface selected.")
-        return []
-
-    print(f"Starting live packet analysis on interface: {interface}")
-    live_results = []
-
+def process_packet(packet_json):
+    """Process each packet captured by tshark, ignoring packets without necessary data."""
     try:
-        # Define a callback function to process each packet and append the result to live_results
-        def packet_callback(packet):
-            result = process_packet(packet)
-            live_results.append(result)
+        packet_data = json.loads(packet_json)
+        # Ensure all required fields are present
+        if 'layers' in packet_data and all(k in packet_data['layers'] for k in ['ip_src', 'ip_dst', 'ip_len']):
+            src_ip = packet_data['layers']['ip_src'][0]
+            dst_ip = packet_data['layers']['ip_dst'][0]
+            packet_len = int(packet_data['layers']['ip_len'][0])
 
-        # Print the selected interface for verification
-        print("Selected Interface:", interface)
+            # Accumulate frequency and total traffic as done in static analysis
+            global packet_freqs, total_traffic
+            packet_freqs[src_ip] = packet_freqs.get(src_ip, 0) + 1
+            packet_freqs[dst_ip] = packet_freqs.get(dst_ip, 0) + 1
+            total_traffic += packet_len
 
-        # Call sniff with the packet_callback function
-        sniff(iface=interface, prn=packet_callback, store=False, filter="ip")
+            packet_info = {
+                "len": packet_len,
+                "src_packet_freq": packet_freqs[src_ip],
+                "dst_packet_freq": packet_freqs[dst_ip],
+                "traffic_volume": total_traffic
+            }
+
+            features = preprocess(packet_info)
+            prediction = model.predict([features])
+            
+            live_results.append({
+                "IP": {
+                    "src": src_ip,
+                    "dst": dst_ip,
+                    "len": packet_len,
+                    "prediction": prediction[0]
+                },
+                "time": time.time()
+            })
+
+            # Limit the size of live_results
+            if len(live_results) > 100:
+                live_results.pop(0)
+
+            print(f"Processed packet: {packet_info}, Prediction: {prediction[0]}")
+        else:
+            print("Packet skipped due to incomplete data")
+    except json.JSONDecodeError as e:
+        print(f"JSON decoding error: {str(e)}")
     except Exception as e:
-        print(f"Failed to start packet sniffing on {interface}: {str(e)}")
-    
-    print("Live Packet Analysis Complete. Live Results:", live_results)
-    return live_results
+        print(f"Error processing packet: {str(e)}")
 
 
+def start_tshark(interface):
+    """ Start the tshark process to capture packets using provided interface. """
+    command = ['tshark', '-i', interface, '-T', 'ek', '-e', 'ip.src', '-e', 'ip.dst', '-e', 'ip.len', '-Y', 'ip', '-l']
+    print(f"Starting tshark with command: {' '.join(command)}")  # Debugging statement
+    with subprocess.Popen(command, stdout=subprocess.PIPE, text=True) as proc:
+        for line in proc.stdout:
+            process_packet(line.strip())
 
+def get_live_results():
+    """ Return a copy of the live results. """
+    print(f"Returning live results: {live_results}")  # Debugging statement
+    return live_results.copy()
 
 if __name__ == "__main__":
-    interfaces = get_available_interfaces()
-    if interfaces:
-        selected_interface = interface_selection_menu(interfaces)
-        if selected_interface:
-            live_packet_analysis(selected_interface)
-    else:
-        print("No interfaces available for selection.")
+    interface = "\\Device\\NPF_{3958AAE7-B2D7-4302-9F76-EA8AD698D618}"
+    start_tshark(interface)

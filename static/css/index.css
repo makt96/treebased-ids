@@ -1,49 +1,75 @@
-/* General body styles */
+/* index.css */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f4f4f9;
     margin: 0;
     padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-/* Header styles */
-h1 {
     color: #333;
-    margin-bottom: 20px;
 }
 
-/* Form styling */
+h1 {
+    color: #95930b;
+    text-align: center;
+}
+
+h2 {
+    color: #020d1c;
+    text-align: center;
+}
+
 form {
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 20px auto;
+    width: 90%;
+    max-width: 600px;
 }
 
-input[type="file"] {
-    font-size: 16px;
+input[type="file"],
+input[type="text"] {
+    width: 100%;
     padding: 10px;
-    margin-bottom: 20px;
+    margin-top: 5px;
     border: 2px solid #ccc;
+    border-radius: 4px;
     display: block;
-    width: calc(100% - 26px);
+    box-sizing: border-box;
 }
 
+input[type="submit"],
 button {
-    background-color: #007BFF;
+    background-color: #007bff;
     color: white;
     border: none;
     padding: 10px 20px;
-    font-size: 16px;
+    margin-top: 20px;
     cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 16px;
+    text-transform: uppercase;
 }
 
+input[type="submit"]:hover,
 button:hover {
     background-color: #0056b3;
+}
+
+label {
+    margin-top: 20px;
+    display: block;
+    font-weight: bold;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #f8f9fa;
+    color: #6c757d;
 }

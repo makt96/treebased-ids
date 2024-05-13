@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Packet Analysis Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 <body>
     <h1>Packet Analysis Tool</h1>
@@ -10,18 +11,17 @@
     <h2>Upload a pcap file for analysis</h2>
     <form action="/upload" method="post" enctype="multipart/form-data">
         <input type="file" name="file">
-        <input type="submit" value="Upload">
+        <input type="submit">
     </form>
+    
 
     <h2>Or</h2>
 
     <h2>Run Live Packet Analysis</h2>
-    <form action="/" method="POST">
-        <select name="interface">
-            {% for interface in interface_names %}
-                <option value="{{ interface['name'] }}">{{ interface }}</option>
-            {% endfor %}
-        </select>
+    <form action="/start" method="POST">
+        <!-- Display the hardcoded interface -->
+        <label for="interface">Using Interface:</label>
+        <input type="text" id="interface" name="interface" value="\\Device\\NPF_{3958AAE7-B2D7-4302-9F76-EA8AD698D618}" readonly>
         <button type="submit">Start Analysis</button>
     </form>
     
