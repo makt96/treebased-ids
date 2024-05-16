@@ -2,6 +2,7 @@ import subprocess
 import json
 import time
 import joblib
+import random
 
 # Load the pre-trained machine learning model
 model = joblib.load('stk_model.pkl')
@@ -82,7 +83,14 @@ def start_tshark(interface):
 def get_live_results():
     """ Return a copy of the live results. """
     print(f"Returning live results: {live_results}")  # Debugging statement
-    return live_results.copy()
+    #return live_results.copy()
+    example_data = {
+        'len': random.randint(40, 1500),
+        'src_packet_freq': random.randint(1, 1000),
+        'dst_packet_freq': random.randint(1, 1000),
+        'traffic_volume': random.randint(1, 1000000)
+    }
+    return example_data
 
 if __name__ == "__main__":
     interface = "\\Device\\NPF_{3958AAE7-B2D7-4302-9F76-EA8AD698D618}"
