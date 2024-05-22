@@ -2,67 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Network Data Visualization</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/live.css') }}">
+    <title>Live Network Monitoring Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/live.css') }}">
 </head>
 <body>
-    <h1>Live Network Data Visualization</h1>
-    
-    <div class="scrolling-wrapper">
-        <div class="chart-container">
-            <h3>Protocol Distribution</h3>
-            <canvas id="protocolChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3>Packet Size Distribution</h3>
-            <canvas id="packetSizeChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3>Inter-arrival Time Analysis</h3>
-            <canvas id="interArrivalTimeChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3>Flow Duration Analysis</h3>
-            <canvas id="flowDurationChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3>Top Conversations</h3>
-            <canvas id="topConversationsChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3>DNS Request Analysis</h3>
-            <canvas id="dnsRequestChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3>HTTP Request Analysis</h3>
-            <canvas id="httpRequestChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3>Geolocation Visualization</h3>
-            <canvas id="geolocationChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3>Anomaly Detection</h3>
-            <canvas id="anomalyDetectionChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3>Bandwidth Utilization</h3>
-            <canvas id="bandwidthUtilizationChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3>Network Topology Visualization</h3>
-            <canvas id="networkTopologyChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3>Correlation Analysis</h3>
-            <canvas id="correlationAnalysisChart"></canvas>
+    <h1>Live Network Monitoring Dashboard</h1>
+    <div id="summaryStats" class="summary-stats">
+        <div class="gauge-container">
+            <div class="gauge">
+                <canvas id="avgPacketLengthGauge"></canvas>
+                <p>Average Packet Length</p>
+            </div>
+            <div class="gauge">
+                <canvas id="avgSourcePacketFreqGauge"></canvas>
+                <p>Average Source Packet Frequency</p>
+            </div>
+            <div class="gauge">
+                <canvas id="avgDestPacketFreqGauge"></canvas>
+                <p>Average Destination Packet Frequency</p>
+            </div>
+            <div class="gauge">
+                <canvas id="totalTrafficVolumeGauge"></canvas>
+                <p>Total Traffic Volume</p>
+            </div>
         </div>
     </div>
-
+    <div class="dashboard">
+        <div class="chart-container">
+            <canvas id="packetLengthChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="sourcePacketFreqChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="destinationPacketFreqChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="trafficVolumeChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="protocolDistributionChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="topTalkersChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="topDestinationsChart"></canvas>
+        </div>
+        <div id="alertsTable" class="alerts-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Alert Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
     <script src="{{ url_for('static', filename='js/live.js') }}"></script>
 </body>
 </html>
